@@ -1,0 +1,17 @@
+name: "Init PulseAudio"
+description: "Initialize a PulseAudio server"
+runs:
+  using: "composite"
+  steps:
+    - name: Install pipewire
+      shell: bash
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y pulseaudio pulseaudio-utils
+
+    - name: Start PipeWire Pulse
+      shell: bash
+      run: |
+        pulseaudio --start --exit-idle-time=-1
+        pactl load-module module-null-sink sink_name=null
+        pactl set-default-sink null
